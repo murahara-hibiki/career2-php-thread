@@ -33,11 +33,13 @@ function readData() {
 
 function writeData() {
     $personal_name = $_POST['personal_name'];
+    $day = date("Y年m月d日 h:i:s");
     $contents = $_POST['contents'];
     $contents = nl2br($contents);
 
     $data = "<hr>\n";
     $data = $data."<p>投稿者:".$personal_name."</p>\n";
+    $data = $data."<p>投稿日時:".$day."</p>\n";
     $data = $data."<p>内容:</p>\n";
     $data = $data."<p>".$contents."</p>\n";
 
@@ -61,7 +63,7 @@ function writeData() {
     $redirect_url = $_SERVER['HTTP_REFERER'];
     header("Location: $redirect_url");
     exit;
-    
+
 
 }
 
