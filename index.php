@@ -11,6 +11,8 @@
     <textarea name="contents" rows="8" cols="40" placeholder="内容" required>
 </textarea><br><br>
     <input type="submit" name="btn" value="投稿する">
+</textarea><br><br>
+    <input type="submit" name="btn" value="投稿を消去する">
 </form>
 
 <h2>スレッド</h2>
@@ -69,6 +71,7 @@ function writeData() {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     writeData();
 }
+
 
 readData();
 
