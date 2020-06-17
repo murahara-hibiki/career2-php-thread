@@ -11,15 +11,26 @@
     <textarea name="contents" rows="8" cols="40" placeholder="内容" required>
 </textarea><br><br>
     <input type="submit" name="btn" value="投稿する">
-</textarea><br><br>
-    <input type="submit" name="btn" value="投稿を消去する">
 </form>
 
 <h2>スレッド</h2>
+<form method="KESU" action="<?php print($_SERVER['PHP_SELF']) ?>">
+    <input type="submit" name="btn" value="けす">
+</form>
 
 <?php
 
 const THREAD_FILE = 'thread.txt';
+
+function kesuData() {
+
+    // デフォルト空文字のファイルを作成,上書きする
+        $fp = fopen(THREAD_FILE, 'w');
+        fwrite($fp, '');
+        fclose($fp);
+    $thread_text = file_get_contents(THREAD_FILE);
+    echo $thread_text;
+}
 
 function readData() {
     // ファイルが存在しなければデフォルト空文字のファイルを作成する
@@ -72,6 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     writeData();
 }
 
+if ($_SERVER["REQUEST_METHOD"] === "KESU") {
+    kesuData();
+}
 
 readData();
 
