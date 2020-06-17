@@ -14,22 +14,21 @@
 </form>
 
 <h2>スレッド</h2>
-<form method="KESU" action="<?php print($_SERVER['PHP_SELF']) ?>">
-    <input type="submit" name="btn" value="けす">
+
+<form method="POST" action="<?php print($_SERVER['PHP_SELF']) ?>">
+    <inpud type="hidden" name="method" value="DELETE">
+    <button type = "submit">投稿を全削除する</button>
 </form>
 
 <?php
 
 const THREAD_FILE = 'thread.txt';
 
+//　削除処理
 function kesuData() {
 
-    // デフォルト空文字のファイルを作成,上書きする
-        $fp = fopen(THREAD_FILE, 'w');
-        fwrite($fp, '');
-        fclose($fp);
-    $thread_text = file_get_contents(THREAD_FILE);
-    echo $thread_text;
+    // 文字ファイルを消す
+    file_put_contents(TTHREAD_FILE,"");
 }
 
 function readData() {
@@ -80,11 +79,13 @@ function writeData() {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    writeData();
-}
 
-if ($_SERVER["REQUEST_METHOD"] === "KESU") {
-    kesuData();
+    if(isset($_POST["method"]) && $_POST["method"] === "DELETE"){
+        kesuData();
+    }else{
+        writeData();
+    }
+
 }
 
 readData();
