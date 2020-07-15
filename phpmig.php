@@ -1,18 +1,26 @@
 <?php
 
-use \Phpmig\Adapter;
+require 'vendor/autoload.php';
 
-$container = new ArrayObject();
+use Dotenv\Dotenv;
+use Phpmig\Adapter;
+use Pimple\Container;
 
-// replace this with a better Phpmig\Adapter\AdapterInterface
-$container['phpmig.adapter'] = new Adapter\File\Flat(__DIR__ . DIRECTORY_SEPARATOR . 'migrations/.migrations.log');
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$container = new Container();
+
+$container['db'] = function () {
+    $dbh = new PDO('mysql:dbname='.$_ENV['DB_NAME'].';host=127.0.0.1', $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+};
+
+$container['phpmig.adapter'] = function ($c) {
+    return new Adapter\PDO\Sql($c['db'], 'migrations');
+};
 
 $container['phpmig.migrations_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'migrations';
-
-// You can also provide an array of migration files
-// $container['phpmig.migrations'] = array_merge(
-//     glob('migrations_1/*.php'),
-//     glob('migrations_2/*.php')
-// );
 
 return $container;
